@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Watch Party</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- UUID Library via jsDelivr CDN -->
+    <script
+        src="https://cdn.jsdelivr.net/npm/uuid@8.3.2/dist/umd/uuid.min.js"
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
+    </script>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-pO3X...YourIntegrityHash..."
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+</head>
+<body>
+    <!-- Theme Switch -->
+    <div class="theme-switch">
+        <input type="checkbox" id="themeToggle">
+        <label for="themeToggle" class="slider"></label>
+    </div>
+
+    <!-- Player Section -->
+    <div id="player"></div>
+
+    <!-- Controls Section -->
+    <div class="controls">
+        <input type="text" id="videoUrlInput" placeholder="Enter YouTube URL" />
+        <button id="setVideoUrlBtn">Set Video</button>
+        <input type="text" id="inviteLink" readonly placeholder="Invite Link" />
+    </div>
+
+    <!-- Admin Controls Section -->
+    <div class="admin-controls" id="adminControls">
+        <button id="skipBackwardBtn"><i class="fas fa-backward"></i></button>
+        <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+        <button id="skipForwardBtn"><i class="fas fa-forward"></i></button>
+        <button id="muteBtn"><i class="fas fa-volume-mute"></i></button>
+    </div>
+
+    <!-- User Status Panel -->
+    <div id="userStatusContainer" class="user-status-container">
+        <h3>Connected Users</h3>
+        <!-- User statuses will be dynamically inserted here -->
+    </div>
+
+    <!-- Friend Controls Section -->
+    <div class="friend-controls" id="friendControls">
+        <label for="volumeSlider">Volume:</label>
+        <input type="range" id="volumeSlider" min="0" max="100" value="50">
+        <div id="volumeBar"></div>
+    </div>
+
+    <!-- Include main.js at the end of the body -->
+    <script src="main.js"></script>
+    <script>
+        // JavaScript to handle theme switch
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('change', () => {
+            if (themeToggle.checked) {
+                document.documentElement.setAttribute('data-theme', 'light');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        });
+
+        // Set initial theme based on system preference
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            themeToggle.checked = false;
+            document.documentElement.setAttribute('data-theme', 'dark');
+        } else {
+            themeToggle.checked = true;
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
+</body>
+</html>

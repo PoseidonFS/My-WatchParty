@@ -1,0 +1,360 @@
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;700&display=swap');
+
+/* CSS Variables */
+:root {
+    --primary-color: #1db954;
+    --primary-color-hover: #1ed760;
+    --secondary-color: #ff4c4c;
+    --secondary-color-hover: #ff1c1c;
+    --background-color: #f5f5f5; /* Softer background for light mode */
+    --text-color: #000000;
+    --input-background: #f0f0f0;
+    --input-focus-shadow: #1db954;
+    --user-status-active: green;
+    --user-status-inactive: red;
+    --volume-bar-color: #4caf50;
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    --background-gradient: linear-gradient(135deg, #f5f5f5 25%, #e0e0e0 100%);
+}
+
+[data-theme="dark"] {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --input-background: #1e1e1e;
+    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+    --background-gradient: linear-gradient(135deg, #121212 25%, #1e1e1e 100%);
+}
+
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic Styles */
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--background-gradient);
+    color: var(--text-color);
+}
+
+/* Theme Switch */
+.theme-switch {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+.theme-switch .slider {
+    width: 50px;
+    height: 25px;
+    background-color: #ccc;
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.theme-switch .slider::before {
+    content: "";
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    background-color: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s;
+}
+
+.theme-switch input:checked + .slider {
+    background-color: var(--primary-color);
+}
+
+.theme-switch input:checked + .slider::before {
+    transform: translateX(25px);
+}
+
+/* Player */
+#player {
+    width: 100%;
+    max-width: 640px;
+    margin: 20px auto;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    transform: translateY(-10px);
+    transition: width 0.8s ease, height 0.8s ease;
+}
+
+/* ...existing code... */
+
+/* Video Resize Controls */
+#videoResizeControls {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex; /* Will be hidden by default in JS */
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px;
+    z-index: 9999; /* Ensure buttons are clickable above user panel */
+}
+
+#videoResizeControls button {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#videoResizeControls button:hover {
+    background-color: var(--primary-color-hover);
+}
+
+/* Smooth transition */
+#player {
+    transition: width 0.8s ease, height 0.8s ease;
+}
+
+/* Default: around half-width */
+.video-size-default {
+    width: 50vw;
+    max-width: 900px;
+    height: auto;
+}
+
+/* Mini player: smaller proportion */
+.video-size-mini {
+    width: 25vw;
+    max-width: 500px;
+    height: auto;
+}
+
+/* Theater mode: large but not full width */
+.video-size-theater {
+    width: 75vw;
+    max-width: 1400px;
+    height: auto;
+}
+
+/* Full screen */
+.video-size-full {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    border-radius: 0;
+    z-index: 9999;
+}
+
+
+/* Controls */
+.controls, .admin-controls, .friend-controls {
+    text-align: center;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 800px;
+    flex-wrap: wrap;
+    transition: display 0.3s ease;
+}
+
+.controls input, .admin-controls button, .controls button {
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.controls input {
+    width: 60%;
+    max-width: 400px;
+    flex: 1;
+    background-color: var(--input-background);
+    color: var(--text-color);
+}
+
+.controls button, .admin-controls button {
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.controls button:hover, .admin-controls button:hover {
+    background-color: var(--primary-color-hover);
+}
+
+.controls input[type="text"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px var(--input-focus-shadow);
+}
+
+/* Admin Controls */
+.admin-controls button {
+    background-color: var(--secondary-color);
+    margin: 0 5px 0 5px;
+    padding: 12px;
+}
+
+.admin-controls button:hover {
+    background-color: var(--secondary-color-hover);
+}
+
+/* Connected Users Container */
+.user-status-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 200px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.user-status-container h3 {
+    margin-top: 0;
+    text-align: center;
+}
+
+.user-status-container div {
+    margin: 5px 0;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.user-status-container .active {
+    color: var(--user-status-active);
+}
+
+.user-status-container .inactive {
+    color: var(--user-status-inactive);
+}
+
+/* Friend Controls */
+.friend-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    align-items: center;
+}
+
+.friend-controls label {
+    margin-right: 10px;
+    font-weight: bold;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+.friend-controls input[type="range"] {
+    width: 150px;
+    margin-right: 10px;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 8px;
+    background: #ddd;
+    border-radius: 4px;
+    outline: none;
+    transition: background 0.3s;
+}
+
+#volumeSlider::-webkit-slider-thumb, #volumeSlider::-moz-range-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-color);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.3s;
+}
+
+#volumeSlider::-webkit-slider-thumb:hover, #volumeSlider::-moz-range-thumb:hover {
+    background: var(--primary-color-hover);
+}
+
+#volumeBarContainer {
+    width: 100px;
+    height: 10px;
+    background-color: #ddd;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#volumeBar {
+    height: 100%;
+    width: 50%; /* Default Volume */
+    background-color: var(--volume-bar-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .controls, .admin-controls, .friend-controls {
+        flex-direction: column;
+    }
+
+    .controls input[type="text"], .controls button,
+    .friend-controls label, .friend-controls input[type="range"] {
+        width: 100%;
+    }
+
+    #player {
+        width: 100%;
+    }
+
+    .user-status-container {
+        display: none;
+    }
+
+    .friend-controls {
+        position: static;
+        margin: 20px auto;
+    }
+
+    #volumeBarContainer {
+        width: 80px;
+    }
+}
+
+@media (max-width: 480px) {
+    #player {
+        width: 95%;
+        height: auto;
+    }
+
+    .friend-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .friend-controls label, .friend-controls input[type="range"] {
+        width: 100%;
+    }
+}
